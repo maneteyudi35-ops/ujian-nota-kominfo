@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Nota Ajuan - Kominfo Palopo</title>
+
+    <link rel="Lambang_Kota_Palopo.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Arial:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div id="areaForm" class="container mt-4 mb-5 d-print-none">
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h4 class="mb-0">Aplikasi Cetak Nota Ajuan & Berita Acara</h4>
+                <small>Dinas Komunikasi Informatika, Statistik & Persandian Kota Palopo</small>
+            </div>
+            <div class="card-body bg-white p-4">
+                <form id="formSurat" novalidate>
+
+                    <h5 class="border-bottom pb-2 text-secondary">A. Informasi Surat</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Kepada Yth</label><input type="text"
+                                id="in_kepada" class="form-control" value="Pengguna Anggaran" required></div>
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Dari</label><input type="text" id="in_dari"
+                                class="form-control" value="PPTK" required></div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-2">
+                            <label class="fw-bold text-danger">Tanggal Nota & Pesanan</label>
+                            <input type="date" id="in_tanggal1" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="fw-bold text-success">Tanggal Berita Acara (BA)</label>
+                            <input type="date" id="in_tanggal2" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-2"><label class="fw-bold">Perihal</label><textarea id="in_perihal"
+                                class="form-control" rows="2"
+                                required>Permintaan Pembayaran Belanja Makan Minum Rapat Pada Dinas Komunikasi Informatika, Statistik Dan Persandian Kota Palopo.</textarea>
+                        </div>
+                        <div class="col-md-6 mb-2"><label class="fw-bold">No. Rekening</label><input type="text"
+                                id="in_norek" class="form-control" value="2.16.01.2.08.0004.5.1.02.01.01.0052" required>
+                        </div>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 text-secondary">B. Rincian Barang Belanja</h5>
+                    <div class="table-responsive mb-2">
+                        <table class="table table-bordered text-center align-middle" id="tabelInputBarang">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Jenis Barang</th>
+                                    <th width="12%">Jum. Brg</th>
+                                    <th width="15%">Satuan</th>
+                                    <th width="20%">Harga (Rp)</th>
+                                    <th width="20%">Sub-Total (Rp)</th>
+                                    <th width="10%">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyBarang">
+                                <tr>
+                                    <td><input type="text" class="form-control in_jenis" placeholder="Kue Kotak"
+                                            required></td>
+                                    <td><input type="number" class="form-control in_jumlah" value="0" min="1"
+                                            oninput="hitungTabel()" required></td>
+                                    <td><input type="text" class="form-control in_satuan" placeholder="Kotak" required>
+                                    </td>
+                                    <td><input type="number" class="form-control in_harga" value="0" min="0"
+                                            oninput="hitungTabel()" required></td>
+                                    <td><input type="text" class="form-control in_subtotal" value="0" readonly></td>
+                                    <td><button type="button" class="btn btn-danger btn-sm"
+                                            onclick="hapusBaris(this)">X</button></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="table-warning fw-bold">
+                                    <td colspan="4" class="text-end">TOTAL KESELURUHAN :</td>
+                                    <td colspan="2" class="text-start" id="teksTotalForm">Rp 0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-success mb-4" onclick="tambahBaris()">+ Tambah Barang
+                        Lain</button>
+
+                    <h5 class="border-bottom pb-2 text-secondary">C. Data Penyedia & Aparatur</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-5 mb-2"><label class="fw-bold">Nama Toko/Penyedia</label><input type="text"
+                                id="in_toko" class="form-control" required></div>
+                        <div class="col-md-3 mb-2"><label class="fw-bold">Nama Perwakilan</label><input type="text"
+                                id="in_namaPenyedia" class="form-control" placeholder="Kosongkan jika tdk ada"></div>
+                        <div class="col-md-4 mb-2"><label class="fw-bold">Alamat Toko</label><input type="text"
+                                id="in_alamatToko" class="form-control" required></div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-3"><label class="fw-bold text-primary">Nama PPTK</label><input type="text"
+                                id="in_namaPptk" class="form-control mb-1" required><input type="text" id="in_nipPptk"
+                                class="form-control form-control-sm" placeholder="NIP..." required></div>
+                        <div class="col-md-3"><label class="fw-bold text-primary">Nama Pejabat Pengadaan</label><input
+                                type="text" id="in_namaPengadaan" class="form-control mb-1" required><input type="text"
+                                id="in_nipPengadaan" class="form-control form-control-sm" placeholder="NIP..." required>
+                        </div>
+                        <div class="col-md-3"><label class="fw-bold text-primary">Nama PPK</label><input type="text"
+                                id="in_namaPpk" class="form-control mb-1" required><input type="text" id="in_nipPpk"
+                                class="form-control form-control-sm" placeholder="NIP..." required></div>
+                        <div class="col-md-3"><label class="fw-bold text-primary">Nama Pengurus Barang</label><input
+                                type="text" id="in_namaPengurus" class="form-control mb-1" required><input type="text"
+                                id="in_nipPengurus" class="form-control form-control-sm" placeholder="NIP..." required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold">PROSES, CETAK & SIMPAN 4 PDF
+                            SEKALIGUS</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="areaCetak" class="d-print-block">
+
+        <div class="halaman-baru">
+            <table class="no-border"
+                style="width: 100%; border-bottom: 5px double black !important; margin-bottom: 15px;">
+                <tr>
+                    <td width="15%" style="text-align: center; vertical-align: middle; padding-bottom: 5px;">
+                        <img src="Lambang_Kota_Palopo.png" alt="[LOGO]" style="width: 70px; height: auto;">
+                    </td>
+                    <td width="85%" style="text-align: center; line-height: 1.2; padding-bottom: 5px;">
+                        <div class="font-kop" style="font-size: 22pt; font-weight: bold;">PEMERINTAH KOTA PALOPO</div>
+                        <div class="font-kop" style="font-size: 12pt; font-weight: bold;">DINAS KOMUNIKASI INFORMATIKA,
+                            STATISTIK & PERSANDIAN</div>
+                        <div style="font-family: 'Arial', sans-serif; font-size: 11pt; margin-top: 3px;">Jl. Andi Baso
+                            Rachim, No: 02 Kota Palopo</div>
+                    </td>
+                </tr>
+            </table>
+
+            <div
+                style="text-align:center; text-decoration: underline; margin-bottom:20px; font-size:12pt; font-weight:bold;">
+                NOTA AJUAN</div>
+
+            <table class="no-border mb-3" style="width:100%;">
+                <tr>
+                    <td width="15%" style="vertical-align:top;">Kepada Yth</td>
+                    <td width="2%" style="vertical-align:top;">:</td>
+                    <td id="out1_kepada"></td>
+                </tr>
+                <tr>
+                    <td>Dari</td>
+                    <td>:</td>
+                    <td id="out1_dari"></td>
+                </tr>
+                <tr>
+                    <td>Tanggal</td>
+                    <td>:</td>
+                    <td id="out1_tanggal"></td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">Perihal</td>
+                    <td style="vertical-align:top;">:</td>
+                    <td id="out1_perihal"></td>
+                </tr>
+                <tr>
+                    <td>No. Rekening</td>
+                    <td>:</td>
+                    <td id="out1_norek"></td>
+                </tr>
+            </table>
+
+            <p style="text-align: justify;">Dengan ini diperhadapkan kepada Bapak <span id="out1_dinamisPerihal"></span>
+                dengan rincian sebagai berikut:</p>
+
+            <div id="tabelCetak1"></div>
+            <p class="mt-2" style="text-align: justify;">Terbilang: <i id="out1_terbilang"
+                    style="font-weight:bold;"></i> Rupiah.</p>
+            <p>Demikian Disampaikan untuk mendapatkan persetujuan.</p>
+
+            <table class="no-border" style="width:100%; text-align:center; margin-top:10px;">
+                <tr>
+                    <td width="60%"></td>
+                    <td width="40%">
+                        PPTK<br><br><br><br>
+                        <b style="text-decoration:underline;" id="out1_namaPptk"></b><br>
+                        NIP. <span id="out1_nipPptk"></span>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="tabel-data" style="width:100%; margin-top:10px;">
+                <tr style="text-align:center; font-weight:bold; background-color: #f9f9f9;">
+                    <td width="50%">PENGGUNA ANGGARAN</td>
+                    <td width="50%">PPK</td>
+                </tr>
+                <tr>
+                    <td style="padding: 15px; vertical-align:top;">
+                        <div style="margin-bottom: 20px;">&#9744; &nbsp; Proses Sesuai Ketentuan</div>
+                        <div>&#9744; &nbsp; Koreksi</div><br><br><br>
+                    </td>
+                    <td style="padding: 15px; vertical-align:top;">
+                        <div style="margin-bottom: 20px;">&#9744; &nbsp; Diperhadapkan Dengan Hormat</div>
+                        <div>&#9744; &nbsp; Mohon Petunjuk</div><br><br><br>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="halaman-baru">
+            <table class="no-border"
+                style="width: 100%; border-bottom: 5px double black !important; margin-bottom: 15px;">
+                <tr>
+                    <td width="15%" style="text-align: center; vertical-align: middle; padding-bottom: 5px;">
+                        <img src="Lambang_Kota_Palopo.png" alt="[LOGO]" style="width: 70px; height: auto;">
+                    </td>
+                    <td width="85%" style="text-align: center; line-height: 1.2; padding-bottom: 5px;">
+                        <div class="font-kop" style="font-size: 22pt; font-weight: bold;">PEMERINTAH KOTA PALOPO</div>
+                        <div class="font-kop" style="font-size: 12pt; font-weight: bold;">DINAS KOMUNIKASI INFORMATIKA,
+                            STATISTIK & PERSANDIAN</div>
+                        <div style="font-family: 'Arial', sans-serif; font-size: 11pt; margin-top: 3px;">Jl. Andi Baso
+                            Rachim, No: 02 Kota Palopo</div>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="text-decoration: underline; font-size:12pt; font-weight:bold;">SURAT PESANAN</div>
+                <div style="font-weight: normal;">Nomor: 900.1.3.6/ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /SP/DISKOMINFO -
+                    SP</div>
+            </div>
+
+            <table class="no-border mb-3" style="width:100%;">
+                <tr>
+                    <td width="10%">Dari</td>
+                    <td width="2%">:</td>
+                    <td>Pejabat Pengadaan Dinas Kominfo - SP Kota Palopo</td>
+                </tr>
+                <tr>
+                    <td>Kepada</td>
+                    <td>:</td>
+                    <td id="out2_toko" style="font-weight:bold;"></td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>:</td>
+                    <td id="out2_alamat"></td>
+                </tr>
+            </table>
+
+            <p>Kiranya dapat dilayani Pesanan sebagaimana disebut di bawah ini:</p>
+            <div id="tabelCetak2"></div>
+
+            <table class="no-border mt-4" style="width:100%; text-align:center;">
+                <tr>
+                    <td width="60%"></td>
+                    <td width="40%">
+                        Palopo, <span id="out2_tanggal"></span><br>
+                        Pejabat Pengadaan<br>Dinas Komunikasi Informatika - SP<br><br><br><br><br>
+                        <b style="text-decoration:underline;" id="out2_namaPengadaan"></b><br>
+                        NIP. <span id="out2_nipPengadaan"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="halaman-baru">
+            <table class="no-border"
+                style="width: 100%; border-bottom: 5px double black !important; margin-bottom: 15px;">
+                <tr>
+                    <td width="15%" style="text-align: center; vertical-align: middle; padding-bottom: 5px;">
+                        <img src="Lambang_Kota_Palopo.png" alt="[LOGO]" style="width: 70px; height: auto;">
+                    </td>
+                    <td width="85%" style="text-align: center; line-height: 1.2; padding-bottom: 5px;">
+                        <div class="font-kop" style="font-size: 22pt; font-weight: bold;">PEMERINTAH KOTA PALOPO</div>
+                        <div class="font-kop" style="font-size: 12pt; font-weight: bold;">DINAS KOMUNIKASI INFORMATIKA,
+                            STATISTIK & PERSANDIAN</div>
+                        <div style="font-family: 'Arial', sans-serif; font-size: 11pt; margin-top: 3px;">Jl. Andi Baso
+                            Rachim, No: 02 Kota Palopo</div>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="text-decoration: underline; font-size:12pt; font-weight:bold;">BERITA ACARA PENGAMBILAN
+                    BARANG</div>
+                <div style="font-weight: normal;">Nomor: 900.1.3.6/ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /BA-PB/DISKOMINFO
+                    - SP</div>
+            </div>
+
+            <p style="text-align: justify;"><span id="out3_tanggalEjaan"></span>, kami yang bertanda tangan di bawah
+                ini:</p>
+            <table class="no-border mb-3" style="width:100%; margin-left:20px;">
+                <tr>
+                    <td width="10%">Nama</td>
+                    <td width="2%">:</td>
+                    <td id="out3_namaPengurus"></td>
+                </tr>
+                <tr>
+                    <td>NIP</td>
+                    <td>:</td>
+                    <td id="out3_nipPengurus"></td>
+                </tr>
+                <tr>
+                    <td>Jabatan</td>
+                    <td>:</td>
+                    <td>Pengurus Barang</td>
+                </tr>
+            </table>
+
+            <p style="text-align: justify;">Selaku Pengurus Barang Dinas Kominfo - SP Kota Palopo telah melakukan serah
+                terima Barang / Jasa berupa biaya dengan rincian sebagai berikut:</p>
+            <div id="tabelCetak3"></div>
+            <p class="mt-2" style="text-align: justify;">Dengan Kata: <i id="out3_terbilang"
+                    style="font-weight:bold;"></i> Rupiah.</p>
+            <p style="text-align: justify;">Yang merupakan realisasi dari Surat Pesanan Nomor: 900.1.3.6 / &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; /SP/DISKOMINFO-SP Tanggal <span id="out3_tanggalToko"></span> Dari <b
+                    id="out3_toko"></b>.</p>
+            <p>Kondisi Barang: [ &nbsp; ] Baik &nbsp; &nbsp; [ &nbsp; ] Kurang Baik</p>
+
+            <table class="no-border mt-4" style="width:100%; text-align:center;">
+                <tr>
+                    <td width="50%">
+                        Pejabat Pembuat Komitmen<br>(PPK)<br><br><br><br><br>
+                        <b style="text-decoration:underline;" id="out3_namaPpk"></b><br>
+                        NIP. <span id="out3_nipPpk"></span>
+                    </td>
+                    <td width="50%">
+                        Pengurus Barang<br>DISKOMINFO - SP<br><br><br><br><br>
+                        <b style="text-decoration:underline;" id="out3_namaPengurusTTD"></b><br>
+                        NIP. <span id="out3_nipPengurusTTD"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="halaman-baru">
+            <table class="no-border"
+                style="width: 100%; border-bottom: 5px double black !important; margin-bottom: 15px;">
+                <tr>
+                    <td width="15%" style="text-align: center; vertical-align: middle; padding-bottom: 5px;">
+                        <img src="Lambang_Kota_Palopo.png" alt="[LOGO]" style="width: 70px; height: auto;">
+                    </td>
+                    <td width="85%" style="text-align: center; line-height: 1.2; padding-bottom: 5px;">
+                        <div class="font-kop" style="font-size: 22pt; font-weight: bold;">PEMERINTAH KOTA PALOPO</div>
+                        <div class="font-kop" style="font-size: 12pt; font-weight: bold;">DINAS KOMUNIKASI INFORMATIKA,
+                            STATISTIK & PERSANDIAN</div>
+                        <div style="font-family: 'Arial', sans-serif; font-size: 11pt; margin-top: 3px;">Jl. Andi Baso
+                            Rachim, No: 02 Kota Palopo</div>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="text-decoration: underline; font-size:12pt; font-weight:bold;">BERITA ACARA SERAH TERIMA DAN
+                    PEMERIKSAAN BARANG</div>
+                <div style="font-weight: normal;">Nomor: 900.1.3.6/ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    /BA-STPB/DISKOMINFO - SP</div>
+            </div>
+
+            <p style="text-align: justify;"><span id="out4_tanggalEjaan"></span>, kami yang bertanda tangan di bawah
+                ini:</p>
+            <table class="no-border mb-3" style="width:100%; margin-left:20px;">
+                <tr>
+                    <td width="10%">Nama</td>
+                    <td width="2%">:</td>
+                    <td id="out4_namaPpk"></td>
+                </tr>
+                <tr>
+                    <td>NIP</td>
+                    <td>:</td>
+                    <td id="out4_nipPpk"></td>
+                </tr>
+                <tr>
+                    <td>Jabatan</td>
+                    <td>:</td>
+                    <td>Pejabat Pembuat Komitmen (PPK)</td>
+                </tr>
+            </table>
+
+            <p style="text-align: justify;">Selaku Pejabat Pembuat Komitmen Dinas Kominfo SP Kota Palopo telah melakukan
+                serah terima Barang / Jasa berupa biaya dengan rincian sebagai berikut:</p>
+            <div id="tabelCetak4"></div>
+            <p class="mt-2" style="text-align: justify;">Dengan Kata: <i id="out4_terbilang"
+                    style="font-weight:bold;"></i> Rupiah.</p>
+            <p style="text-align: justify;">Yang merupakan realisasi dari Surat Pesanan Nomor: 900.1.3.6 / &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; /SP/DISKOMINFO-SP Tanggal <span id="out4_tanggalToko"></span> Dari <b
+                    id="out4_toko"></b>.</p>
+            <p>Kondisi Barang: [ &nbsp; ] Baik &nbsp; &nbsp; [ &nbsp; ] Kurang Baik</p>
+
+            <table class="no-border mt-4" style="width:100%; text-align:center;">
+                <tr>
+                    <td width="50%">
+                        PENYEDIA<br><b id="out4_tokoTTD"></b><br><br><br><br><br>
+                        <b id="out4_namaPenyediaTTD"></b>
+                    </td>
+                    <td width="50%">
+                        Pejabat Pembuat Komitmen<br>(PPK)<br><br><br><br><br>
+                        <b style="text-decoration:underline;" id="out4_namaPpkTTD"></b><br>
+                        NIP. <span id="out4_nipPpkTTD"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

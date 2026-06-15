@@ -1,0 +1,63 @@
+/* Desain Khusus Cetak */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 1.5cm;
+    }
+
+    body {
+        font-family: "Arial", sans-serif;
+        font-size: 11pt;
+        background-color: white;
+        color: black;
+    }
+
+    /* Sembunyikan elemen layar saat cetak */
+    .d-print-none {
+        display: none !important;
+    }
+
+    .d-print-block {
+        display: block !important;
+    }
+
+    /* Pemisah antar surat */
+    .halaman-baru {
+        page-break-after: always;
+        padding-top: 10px;
+    }
+
+    /* Pengaturan Tabel Cetak */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    table.tabel-data,
+    table.tabel-data th,
+    table.tabel-data td {
+        border: 1px solid black !important;
+    }
+
+    th,
+    td {
+        padding: 5px;
+    }
+
+    .no-border,
+    .no-border th,
+    .no-border td {
+        border: none !important;
+    }
+
+    /* Class Khusus untuk Font Judul / Kop Surat (Oswald) */
+    .font-kop {
+        font-family: 'Oswald', sans-serif;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* Sembunyikan template PDF saat dilihat di layar normal */
+.d-print-block {
+    display: none;
+}
