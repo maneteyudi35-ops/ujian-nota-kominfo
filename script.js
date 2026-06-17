@@ -110,6 +110,7 @@ document.getElementById('formSurat').addEventListener('submit', function (e) {
 
     const hurufTerbilang = terbilang(grandTotal);
     const perihalVal = document.getElementById('in_perihal').value;
+    const nomorSuratVal = document.getElementById('in_nomorSurat').value;
 
     // Suntik Halaman 1 (Nota Ajuan)
     document.getElementById('out1_kepada').innerText = document.getElementById('in_kepada').value;
@@ -123,6 +124,7 @@ document.getElementById('formSurat').addEventListener('submit', function (e) {
     document.getElementById('out1_terbilang').innerText = hurufTerbilang;
 
     // Suntik Halaman 2 (Surat Pesanan)
+    document.getElementById('out2_nomor').innerText = nomorSuratVal;
     document.getElementById('out2_toko').innerText = document.getElementById('in_toko').value.toUpperCase();
     document.getElementById('out2_alamat').innerText = document.getElementById('in_alamatToko').value;
     document.getElementById('out2_tanggal').innerText = tgl1Text;
@@ -130,6 +132,8 @@ document.getElementById('formSurat').addEventListener('submit', function (e) {
     document.getElementById('out2_nipPengadaan').innerText = document.getElementById('in_nipPengadaan').value;
 
     // Suntik Halaman 3 (Berita Acara Pengambilan)
+    document.getElementById('out3_nomor').innerText = nomorSuratVal;
+    document.getElementById('out3_nomorRef').innerText = nomorSuratVal;
     document.getElementById('out3_tanggalEjaan').innerText = "Pada hari ini, " + hariBA + ", " + formatTanggalEjaan(tgl2Ori);
     document.getElementById('out3_namaPengurus').innerText = document.getElementById('in_namaPengurus').value.toUpperCase();
     document.getElementById('out3_nipPengurus').innerText = document.getElementById('in_nipPengurus').value;
@@ -142,6 +146,8 @@ document.getElementById('formSurat').addEventListener('submit', function (e) {
     document.getElementById('out3_toko').innerText = document.getElementById('in_toko').value.toUpperCase();
 
     // Suntik Halaman 4 (Berita Acara Serah Terima)
+    document.getElementById('out4_nomor').innerText = nomorSuratVal;
+    document.getElementById('out4_nomorRef').innerText = nomorSuratVal;
     document.getElementById('out4_tanggalEjaan').innerText = "Pada hari ini, " + hariBA + ", " + formatTanggalEjaan(tgl2Ori);
     document.getElementById('out4_namaPpk').innerText = document.getElementById('in_namaPpk').value.toUpperCase();
     document.getElementById('out4_nipPpk').innerText = document.getElementById('in_nipPpk').value;
